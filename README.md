@@ -15,4 +15,4 @@ Modules:
 
 ## How to contribute  
 
-Click [here](docs/odt/PaymentSystem.odt)
+To be continued... 
