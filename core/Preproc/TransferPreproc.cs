@@ -12,79 +12,37 @@ namespace Banking.Core.Preproc
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).DepositMoney(money, currency); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).DepositMoney(money, currency); 
         }
         public bool WithdrawMoney(int bankAccountId, Money money, Currency currency)
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).WithdrawMoney(money, currency); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).WithdrawMoney(money, currency); 
         }
         public bool TransferToBankAccount(int bankAccountId, Money money, Currency currency, string bankAccountNumber)
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).SendToBankAccount(money, currency, bankAccountNumber); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).SendToBankAccount(money, currency, bankAccountNumber); 
         }
         public bool TransferToPhoneNumber(int bankAccountId, Money money, Currency currency, string phoneNumber)
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).SendToPhoneNumber(money, currency, phoneNumber); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).SendToPhoneNumber(money, currency, phoneNumber); 
         }
         public bool TransferViaFps(int bankAccountId, Money money, Currency currency, string phoneNumber)
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).SendViaFps(money, currency, phoneNumber); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).SendViaFps(money, currency, phoneNumber); 
         }
         public bool TransferToEftpos(int bankAccountId, Money money, Currency currency, string eftposInfo)
         {
             if (bankAccountId < 0) throw new System.Exception("Bank account could not be negative"); 
 
-            try 
-            {
-                return GetBankAccount(bankAccountId).SendToEftpos(money, currency, eftposInfo); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetBankAccount(bankAccountId).SendToEftpos(money, currency, eftposInfo); 
         }
 
         private BankAccount GetBankAccount(int bankAccountId)
