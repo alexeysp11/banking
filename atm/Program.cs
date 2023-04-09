@@ -34,7 +34,7 @@ namespace Banking.Atm
 
                 bool isPinCorrect = atm.EnterPin(oldPin); 
                 System.Console.WriteLine("Enter PIN: **** - " + (isPinCorrect ? "OK" : "Incorrect PIN")); 
-                if (isPinCorrect) throw new System.Exception("Incorrect PIN"); 
+                if (!isPinCorrect) throw new System.Exception("Incorrect PIN"); 
 
                 System.Console.WriteLine(atm.CheckBalance()); 
 

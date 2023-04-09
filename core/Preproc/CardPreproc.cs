@@ -1,3 +1,4 @@
+using Banking.Core.Models; 
 using Banking.Core.Repo; 
 
 namespace Banking.Core.Preproc
@@ -10,26 +11,48 @@ namespace Banking.Core.Preproc
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(pin)) throw new System.Exception("Card number and PIN could not be empty"); 
 
-            var cards = Repo.GetCards(); 
-            foreach (var card in cards) if (card.GetNumber().Equals(cardNumber)) return card.IsPinValid(pin); 
-            throw new System.Exception("Card number not found"); 
+            try
+            {
+                return GetCard(cardNumber).IsPinValid(pin); 
+            }
+            catch (System.Exception)
+            {
+                return false; 
+            }
         }
         public bool ChangePin(string cardNumber, string oldPin, string newPin)
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(oldPin) || string.IsNullOrEmpty(newPin)) throw new System.Exception("Card number and PIN could not be empty"); 
 
-            var cards = Repo.GetCards(); 
-            foreach (var card in cards) if (card.GetNumber().Equals(cardNumber)) return card.ChangePin(oldPin, newPin); 
-            throw new System.Exception("Card number not found"); 
+            try
+            {
+                return GetCard(cardNumber).ChangePin(oldPin, newPin); 
+            }
+            catch (System.Exception)
+            {
+                return false; 
+            }
         }
 
         public int GetBankAccountId(string cardNumber)
         {
             if (string.IsNullOrEmpty(cardNumber)) throw new System.Exception("Card number could not be empty"); 
 
+            try
+            {
+                return GetCard(cardNumber).GetBankAccountId();
+            }
+            catch (System.Exception)
+            {
+                return -1; 
+            }
+        }
+
+        private Card GetCard(string cardNumber)
+        {
             var cards = Repo.GetCards(); 
-            foreach (var card in cards) if (card.GetNumber().Equals(cardNumber)) return card.GetBankAccountId();
-            throw new System.Exception("Bank account not found"); 
+            foreach (var card in cards) if (card.GetNumber().Equals(cardNumber)) return card; 
+            throw new System.Exception("Card number not found"); 
         }
     }
 }
