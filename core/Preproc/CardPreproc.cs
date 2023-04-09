@@ -11,41 +11,20 @@ namespace Banking.Core.Preproc
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(pin)) throw new System.Exception("Card number and PIN could not be empty"); 
 
-            try
-            {
-                return GetCard(cardNumber).IsPinValid(pin); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetCard(cardNumber).IsPinValid(pin); 
         }
         public bool ChangePin(string cardNumber, string oldPin, string newPin)
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(oldPin) || string.IsNullOrEmpty(newPin)) throw new System.Exception("Card number and PIN could not be empty"); 
 
-            try
-            {
-                return GetCard(cardNumber).ChangePin(oldPin, newPin); 
-            }
-            catch (System.Exception)
-            {
-                return false; 
-            }
+            return GetCard(cardNumber).ChangePin(oldPin, newPin); 
         }
 
         public int GetBankAccountId(string cardNumber)
         {
             if (string.IsNullOrEmpty(cardNumber)) throw new System.Exception("Card number could not be empty"); 
 
-            try
-            {
-                return GetCard(cardNumber).GetBankAccountId();
-            }
-            catch (System.Exception)
-            {
-                return -1; 
-            }
+            return GetCard(cardNumber).GetBankAccountId();
         }
 
         private Card GetCard(string cardNumber)
