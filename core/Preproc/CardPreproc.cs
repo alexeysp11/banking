@@ -10,20 +10,17 @@ namespace Banking.Core.Preproc
         public bool CheckPin(string cardNumber, string pin)
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(pin)) throw new System.Exception("Card number and PIN could not be empty"); 
-
             return GetCard(cardNumber).IsPinValid(pin); 
         }
         public bool ChangePin(string cardNumber, string oldPin, string newPin)
         {
             if (string.IsNullOrEmpty(cardNumber) || string.IsNullOrEmpty(oldPin) || string.IsNullOrEmpty(newPin)) throw new System.Exception("Card number and PIN could not be empty"); 
-
             return GetCard(cardNumber).ChangePin(oldPin, newPin); 
         }
 
         public int GetBankAccountId(string cardNumber)
         {
             if (string.IsNullOrEmpty(cardNumber)) throw new System.Exception("Card number could not be empty"); 
-
             return GetCard(cardNumber).GetBankAccountId();
         }
 
