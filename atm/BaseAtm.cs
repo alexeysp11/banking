@@ -1,3 +1,4 @@
+using System.Collections.Generic; 
 using Banking.Core.Enums; 
 using Banking.Core.Models; 
 using Banking.Core.Preproc; 
@@ -32,9 +33,13 @@ namespace Banking.Atm
 
         public bool EnterPin(string pin)
         {
-            // Test server 
-            Banking.Network.BankingHttpClient.Get("http://localhost:8080/firstExample/");
-            System.Console.ReadLine();
+            // System.Console.WriteLine(Banking.Network.BankingHttpClient.Get("http://localhost:8080/firstExample/"));
+            var values = new Dictionary<string, string>
+            {
+                { "card_number", CardNumber },
+                { "pin", pin }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/pin/enter/", values));
 
             return CardPreproc.CheckPin(CardNumber, pin); 
         }

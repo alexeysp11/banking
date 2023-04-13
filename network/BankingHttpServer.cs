@@ -73,10 +73,12 @@ namespace Banking.Network
 
             System.Console.WriteLine(ctx.Response.StatusCode + " " + ctx.Response.StatusDescription + ": " + ctx.Request.Url);
 
+            System.IO.StreamReader reader = new System.IO.StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding);
+            System.Console.WriteLine(reader.ReadToEnd()); 
+
             ctx.Response.ContentEncoding = Encoding.UTF8;
             ctx.Response.ContentType = "text/html";
             ctx.Response.ContentLength64 = buf.Length;
-
             ctx.Response.OutputStream.Write(buf, 0, buf.Length);
             ctx.Response.Close();
         }
@@ -88,18 +90,17 @@ namespace Banking.Network
         /// <returns></returns>
         private string GetResponseText(string url)
         {
-            if (IsPathValid(url, WebPaths["firstExample"]))
+            if (IsPathValid(url, WebPaths["atm/pin/enter"]))
             {
-                // return ReadAllTextFromBinDir(@"\pages\firstExample.html");
-                return "<html><head><title>firstExample</title></head><body>Hello, this is a custom WinCCTcpServer.<br>firstExample</body></html>"; 
+                return "<html><head><title>atm/pin/enter</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>atm/pin/enter</body></html>"; 
             }
             else if (IsPathValid(url, WebPaths["test"]))
             {
-                return "<html><head><title>test</title></head><body>Hello, this is a custom WinCCTcpServer.<br>test</body></html>"; 
+                return "<html><head><title>test</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>test</body></html>"; 
             }
             else if (IsPathValid(url, WebPaths["dbg"]))
             {
-                return "<html><head><title>Debug</title></head><body>Hello, this is a custom WinCCTcpServer.<br>Debug</body></html>";
+                return "<html><head><title>Debug</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>Debug</body></html>";
             }
             return "Page is not found";
         }
@@ -111,7 +112,7 @@ namespace Banking.Network
         /// </summary>
         private void AddWebPaths()
         {
-            WebPaths.Add("firstExample", "/firstExample/");
+            WebPaths.Add("atm/pin/enter", "/atm/pin/enter/");
             WebPaths.Add("test", "/test/");
             WebPaths.Add("dbg", "/dbg/");
         }
