@@ -4,9 +4,13 @@ namespace Banking.CoreServer
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Started core server"); 
+            System.Console.WriteLine("Start core server"); 
 
-            (new Banking.Network.BankingHttpServer()).CreateWebServer();
+            // string testPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\coreserver\\config.json"); 
+            // System.Console.WriteLine("test path: " + testPath); 
+            // string fullpath = @"C:\Users\123\Documents\projects\banking\coreserver\config.json"; 
+            string fullpath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\coreserver\\config.json"); 
+            (new Banking.Network.BankingHttpServer(fullpath)).CreateWebServer();
             System.Console.ReadLine();
         }
     }

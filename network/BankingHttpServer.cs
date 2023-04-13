@@ -24,15 +24,21 @@ namespace Banking.Network
         /// <summary>
         /// Allowed web site's paths 
         /// </summary>
-        private Dictionary<string, string> WebPaths = new Dictionary<string, string>();
+        private List<string> WebPaths = new List<string>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private Banking.Common.CoreServerSettings Settings { get; set; }
         #endregion  // Private properties
 
         #region Constructors
         /// <summary>
         /// Default constructor 
         /// </summary>
-        public BankingHttpServer()
+        public BankingHttpServer(string configFile)
         {
+            Settings = (new Banking.Common.Configurator()).GetConfigSettings(configFile); 
             AddWebPaths(); 
         }
         #endregion  // Constructors
@@ -90,19 +96,20 @@ namespace Banking.Network
         /// <returns></returns>
         private string GetResponseText(string url)
         {
-            if (IsPathValid(url, WebPaths["atm/pin/enter"]))
-            {
-                return "<html><head><title>atm/pin/enter</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>atm/pin/enter</body></html>"; 
-            }
-            else if (IsPathValid(url, WebPaths["test"]))
-            {
-                return "<html><head><title>test</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>test</body></html>"; 
-            }
-            else if (IsPathValid(url, WebPaths["dbg"]))
-            {
-                return "<html><head><title>Debug</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>Debug</body></html>";
-            }
-            return "Page is not found";
+            if (!IsPathValid(url)) return "Page is not found"; 
+            // if (IsPathValid(url, WebPaths["atm/pin/enter"]))
+            // {
+            //     return "<html><head><title>atm/pin/enter</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>atm/pin/enter</body></html>"; 
+            // }
+            // else if (IsPathValid(url, WebPaths["test"]))
+            // {
+            //     return "<html><head><title>test</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>test</body></html>"; 
+            // }
+            // else if (IsPathValid(url, WebPaths["dbg"]))
+            // {
+            //     return "<html><head><title>Debug</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>Debug</body></html>";
+            // }
+            return "Page is returned";
         }
         #endregion  // Request processing 
 
@@ -112,9 +119,10 @@ namespace Banking.Network
         /// </summary>
         private void AddWebPaths()
         {
-            WebPaths.Add("atm/pin/enter", "/atm/pin/enter/");
-            WebPaths.Add("test", "/test/");
-            WebPaths.Add("dbg", "/dbg/");
+            foreach (string atm in Settings.Atm) foreach (string path in Settings.HttpPathsAtm) WebPaths.Add("/atm/" + atm + path);
+            foreach (string eftpos in Settings.Eftpos) WebPaths.Add("/eftpos/" + eftpos + "/pin/enter/");
+            WebPaths.Add("/test/");
+            WebPaths.Add("/dbg/");
         }
 
         /// <summary>
@@ -123,9 +131,11 @@ namespace Banking.Network
         /// <param name="listener"></param>
         private void AddPrefixes(HttpListener listener)
         {
-            foreach (string key in WebPaths.Keys)
+            string purePath = string.Empty; 
+            foreach (string path in WebPaths)
             {
-                listener.Prefixes.Add("http://localhost:8080/" + WebPaths[key].TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars) + "/");
+                purePath = path.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars); 
+                if (!string.IsNullOrEmpty(purePath)) listener.Prefixes.Add("http://localhost:8080/" + purePath + "/");
             }
         }
 
@@ -133,11 +143,17 @@ namespace Banking.Network
         /// Checks if web site path is valid 
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="path"></param>
         /// <returns></returns>
-        private bool IsPathValid(string url, string path)
+        private bool IsPathValid(string url)
         {
-            return url.Contains(path.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars));
+            string pureUrl = url.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars); 
+            string purePath = string.Empty; 
+            foreach (string path in WebPaths) 
+            {
+                purePath = path.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars); 
+                if (pureUrl.Contains(purePath)) return true; 
+            }
+            return false;
         }
         #endregion  // Web site's folder structure
 
@@ -149,7 +165,9 @@ namespace Banking.Network
         /// <returns></returns>
         private string ReadAllTextFromBinDir(string filepath)
         {
-            return System.IO.File.ReadAllText(BinPath.TrimEnd(WebSiteFSDelimiterChars) + @"\" + filepath.TrimStart(WebSiteFSDelimiterChars)); 
+            string pureBin = BinPath.TrimEnd(WebSiteFSDelimiterChars); 
+            string purePath = filepath.TrimStart(WebSiteFSDelimiterChars); 
+            return System.IO.File.ReadAllText(pureBin + @"\" + purePath); 
         }
         #endregion  // Getting files 
     }

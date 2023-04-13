@@ -1,0 +1,11 @@
+{
+    "Settings": {
+        "Atm": ["v1", "v2"],
+        "Eftpos": ["v1", "v2"], 
+        "HttpPathsAtm": [
+            "/pin/enter/", 
+            "/pin/change/",
+            "/balance/get/"
+        ]
+    }
+}

@@ -33,23 +33,36 @@ namespace Banking.Atm
 
         public bool EnterPin(string pin)
         {
-            // System.Console.WriteLine(Banking.Network.BankingHttpClient.Get("http://localhost:8080/firstExample/"));
             var values = new Dictionary<string, string>
             {
-                { "card_number", CardNumber },
+                { "cardnumber", CardNumber },
                 { "pin", pin }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/pin/enter/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/pin/enter/", values));
 
             return CardPreproc.CheckPin(CardNumber, pin); 
         }
         public bool ChangePin(string oldPin, string newPin)
         {
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "oldpin", oldPin },
+                { "newpin", newPin }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/pin/change/", values));
+
             return CardPreproc.ChangePin(CardNumber, oldPin, newPin); 
         }
         
         public string CheckBalance()
         {
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/balance/get/", values));
+
             return BankAccountPreproc.CheckBalance(CardPreproc.GetBankAccountId(CardNumber)); 
         }
 
