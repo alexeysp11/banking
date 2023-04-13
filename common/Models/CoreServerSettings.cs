@@ -1,4 +1,4 @@
-namespace Banking.Common
+namespace Banking.Common.Models
 {
     public sealed class CoreServerSettings
     {

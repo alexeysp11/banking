@@ -29,7 +29,7 @@ namespace Banking.Network
         /// <summary>
         /// 
         /// </summary>
-        private Banking.Common.CoreServerSettings Settings { get; set; }
+        private Banking.Common.Models.CoreServerSettings Settings { get; set; }
         #endregion  // Private properties
 
         #region Constructors

@@ -1,3 +1,4 @@
+using Banking.Common.Models; 
 using Microsoft.Extensions.Configuration; 
 
 namespace Banking.Common 
