@@ -1,5 +1,5 @@
 using System.Collections.Generic; 
-using Banking.Core.Models; 
+using Banking.Common.Models; 
 
 namespace Banking.Core.Repo
 {

@@ -1,4 +1,4 @@
-namespace Banking.Core.Enums
+namespace Banking.Common.Enums
 {
     public enum CardType
     {

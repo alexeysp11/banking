@@ -1,5 +1,5 @@
-using Banking.Core.Enums; 
-using Banking.Core.Models; 
+using Banking.Common.Enums; 
+using Banking.Common.Models; 
 using Banking.Core.Repo; 
 
 namespace Banking.Core.Preproc

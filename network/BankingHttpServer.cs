@@ -38,7 +38,7 @@ namespace Banking.Network
         /// </summary>
         public BankingHttpServer(string configFile)
         {
-            Settings = (new Banking.Common.Configurator()).GetConfigSettings(configFile); 
+            Settings = (new Banking.Common.Configurator()).GetCoreServerConfigSettings(configFile); 
             AddWebPaths(); 
         }
         #endregion  // Constructors
@@ -96,7 +96,7 @@ namespace Banking.Network
         /// <returns></returns>
         private string GetResponseText(string url)
         {
-            if (!IsPathValid(url)) return "Page is not found"; 
+            if (!IsPathValid(url)) return "Path is not valid"; 
             // if (IsPathValid(url, WebPaths["atm/pin/enter"]))
             // {
             //     return "<html><head><title>atm/pin/enter</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>atm/pin/enter</body></html>"; 
@@ -109,7 +109,7 @@ namespace Banking.Network
             // {
             //     return "<html><head><title>Debug</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>Debug</body></html>";
             // }
-            return "Page is returned";
+            return "Page is not found";
         }
         #endregion  // Request processing 
 

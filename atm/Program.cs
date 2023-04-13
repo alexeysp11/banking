@@ -1,5 +1,5 @@
-﻿using Banking.Core.Enums; 
-using Banking.Core.Models; 
+﻿using Banking.Common.Enums; 
+using Banking.Common.Models; 
 
 namespace Banking.Atm
 {
@@ -54,13 +54,13 @@ namespace Banking.Atm
                 System.Console.WriteLine(atm.CheckBalance()); 
 
                 System.Console.WriteLine("Transfer to phone number '" + phoneNumber.ToString() + "': " + moneyTpnUsd.GetString() + " and " + moneyTpnEur.GetString()); 
-                atm.TransferToBankAccount(moneyTpnUsd, Currency.USD, phoneNumber); 
-                atm.TransferToBankAccount(moneyTpnEur, Currency.EUR, phoneNumber); 
+                atm.TransferToPhoneNumber(moneyTpnUsd, Currency.USD, phoneNumber); 
+                atm.TransferToPhoneNumber(moneyTpnEur, Currency.EUR, phoneNumber); 
                 System.Console.WriteLine(atm.CheckBalance()); 
 
                 System.Console.WriteLine("Transfer to phone number '" + phoneNumber.ToString() + "' via FPS: " + moneyFpsUsd.GetString() + " and " + moneyFpsEur.GetString()); 
-                atm.TransferToBankAccount(moneyFpsUsd, Currency.USD, phoneNumber); 
-                atm.TransferToBankAccount(moneyFpsEur, Currency.EUR, phoneNumber); 
+                atm.TransferViaFps(moneyFpsUsd, Currency.USD, phoneNumber); 
+                atm.TransferViaFps(moneyFpsEur, Currency.EUR, phoneNumber); 
                 System.Console.WriteLine(atm.CheckBalance()); 
 
                 System.Console.WriteLine("New PIN: **** - " + (atm.ChangePin(oldPin, newPin) ? "OK" : "Unable to change PIN"));

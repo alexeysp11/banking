@@ -1,6 +1,6 @@
-using Banking.Core.Enums; 
+using Banking.Common.Enums; 
 
-namespace Banking.Core.Models
+namespace Banking.Common.Models
 {
     public class Money
     {
@@ -39,6 +39,10 @@ namespace Banking.Core.Models
         {
             CheckFractionFormat(Fraction); 
             return Integer.ToString() + "." + Fraction.ToString(); 
+        }
+        public string GetCurrency()
+        {
+            return Currency.ToString(); 
         }
 
         private void CheckFractionFormat(int fraction)

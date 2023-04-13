@@ -1,24 +1,12 @@
 using System.Collections.Generic; 
-using Banking.Core.Enums; 
-using Banking.Core.Models; 
-using Banking.Core.Preproc; 
+using Banking.Common.Enums; 
+using Banking.Common.Models; 
 
 namespace Banking.Atm
 {
     public class BaseAtm : IAtm
     {
         private string CardNumber { get; set; }
-
-        private CardPreproc CardPreproc { get; set; }
-        private BankAccountPreproc BankAccountPreproc { get; set; }
-        private ICommonTransferPreproc TransferPreproc { get; set; }
-
-        public BaseAtm()
-        {
-            CardPreproc = new CardPreproc(); 
-            BankAccountPreproc = new BankAccountPreproc(); 
-            TransferPreproc = new TransferPreproc(); 
-        }
 
         public bool InsertCard()
         {
@@ -40,7 +28,7 @@ namespace Banking.Atm
             };
             System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/pin/enter/", values));
 
-            return CardPreproc.CheckPin(CardNumber, pin); 
+            return true; 
         }
         public bool ChangePin(string oldPin, string newPin)
         {
@@ -52,7 +40,7 @@ namespace Banking.Atm
             };
             System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/pin/change/", values));
 
-            return CardPreproc.ChangePin(CardNumber, oldPin, newPin); 
+            return true; 
         }
         
         public string CheckBalance()
@@ -63,29 +51,72 @@ namespace Banking.Atm
             };
             System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/balance/get/", values));
 
-            return BankAccountPreproc.CheckBalance(CardPreproc.GetBankAccountId(CardNumber)); 
+            return "Balance: "; 
         }
 
         public bool DepositMoney(Money money, Currency currency)
         {
-            return TransferPreproc.DepositMoney(CardPreproc.GetBankAccountId(CardNumber), money, currency); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/cash/deposit/", values));
+
+            return true; 
         }
         public bool WithdrawMoney(Money money, Currency currency)
         {
-            return TransferPreproc.WithdrawMoney(CardPreproc.GetBankAccountId(CardNumber), money, currency); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/cash/withdraw/", values));
+
+            return true; 
         }
 
         public bool TransferToBankAccount(Money money, Currency currency, string bankAccountNumber)
         {
-            return TransferPreproc.TransferToBankAccount(CardPreproc.GetBankAccountId(CardNumber), money, currency, bankAccountNumber); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() },
+                { "bankaccountnumber", bankAccountNumber }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/transfer/tobankaccount/", values));
+
+            return true; 
         }
         public bool TransferToPhoneNumber(Money money, Currency currency, string phoneNumber)
         {
-            return TransferPreproc.TransferToPhoneNumber(CardPreproc.GetBankAccountId(CardNumber), money, currency, phoneNumber); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() },
+                { "phonenumber", phoneNumber.Replace("+", "") }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/transfer/tophonenumber/", values));
+
+            return true; 
         }
         public bool TransferViaFps(Money money, Currency currency, string phoneNumber)
         {
-            return TransferPreproc.TransferViaFps(CardPreproc.GetBankAccountId(CardNumber), money, currency, phoneNumber); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() },
+                { "phonenumber", phoneNumber.Replace("+", "") }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/atm/v1/transfer/fps/", values));
+
+            return true; 
         }
     }
 }

@@ -1,11 +1,16 @@
 {
-    "Settings": {
+    "CoreServerSettings": {
         "Atm": ["v1", "v2"],
         "Eftpos": ["v1", "v2"], 
         "HttpPathsAtm": [
             "/pin/enter/", 
             "/pin/change/",
-            "/balance/get/"
+            "/balance/get/",
+            "/cash/deposit/",
+            "/cash/withdraw/",
+            "/transfer/tobankaccount/",
+            "/transfer/tophonenumber/",
+            "/transfer/fps/"
         ]
     }
 }
