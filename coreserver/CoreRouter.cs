@@ -2,9 +2,9 @@ using Banking.Core.Enums;
 using Banking.Core.Models; 
 using Banking.Core.Preproc; 
 
-namespace Banking.Atm
+namespace Banking.CoreServer
 {
-    public class BaseAtm : IAtm
+    public class CoreRouter
     {
         private string CardNumber { get; set; }
 
@@ -12,30 +12,15 @@ namespace Banking.Atm
         private BankAccountPreproc BankAccountPreproc { get; set; }
         private ICommonTransferPreproc TransferPreproc { get; set; }
 
-        public BaseAtm()
+        public CoreRouter()
         {
             CardPreproc = new CardPreproc(); 
             BankAccountPreproc = new BankAccountPreproc(); 
             TransferPreproc = new TransferPreproc(); 
         }
 
-        public bool InsertCard()
-        {
-            CardNumber = "5345-5732-2248"; 
-            return true; 
-        }
-        public bool TakeBackCard()
-        {
-            CardNumber = string.Empty; 
-            return true; 
-        }
-
         public bool EnterPin(string pin)
         {
-            // Test server 
-            Banking.Network.BankingHttpClient.Get("http://localhost:8080/firstExample/");
-            System.Console.ReadLine();
-
             return CardPreproc.CheckPin(CardNumber, pin); 
         }
         public bool ChangePin(string oldPin, string newPin)
