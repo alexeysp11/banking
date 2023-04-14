@@ -2,7 +2,7 @@ using Banking.Common.Enums;
 using Banking.Common.Models; 
 using Banking.Core.Preproc; 
 
-namespace Banking.CoreServer
+namespace Banking.Core
 {
     public class CoreRouter
     {

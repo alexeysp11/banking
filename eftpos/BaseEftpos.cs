@@ -28,7 +28,7 @@ namespace Banking.Eftpos
                 { "cardnumber", CardNumber },
                 { "pin", pin }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/eftpos/v1/pin/enter/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/eftpos/v1/pin/enter/", values));
 
             return true; 
         }
@@ -42,7 +42,7 @@ namespace Banking.Eftpos
                 { "currency", money.GetCurrency() },
                 { "eftposinfo", eftposInfo }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/eftpos/v1/transfer/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/eftpos/v1/transfer/", values));
 
             return true; 
         }

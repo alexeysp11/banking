@@ -12,20 +12,21 @@ namespace Banking.Network
     {
         #region Private properties
         /// <summary>
-        /// Web site's file system delimiter characters 
+        /// 
         /// </summary>
-        private char[] WebSiteFSDelimiterChars { get; } = { '/', '\\' }; 
-
+        private string ServerAddress = "http://localhost:8080/banking/"; 
         /// <summary>
         /// Path of bin directory 
         /// </summary>
         private string BinPath { get; } = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); 
-
+        /// <summary>
+        /// Web site's file system delimiter characters 
+        /// </summary>
+        private char[] WebSiteFSDelimiterChars { get; } = { '/', '\\' }; 
         /// <summary>
         /// Allowed web site's paths 
         /// </summary>
         private List<string> WebPaths = new List<string>();
-
         /// <summary>
         /// 
         /// </summary>
@@ -135,7 +136,7 @@ namespace Banking.Network
             foreach (string path in WebPaths)
             {
                 purePath = path.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars); 
-                if (!string.IsNullOrEmpty(purePath)) listener.Prefixes.Add("http://localhost:8080/" + purePath + "/");
+                if (!string.IsNullOrEmpty(purePath)) listener.Prefixes.Add(ServerAddress + purePath + "/");
             }
         }
 
