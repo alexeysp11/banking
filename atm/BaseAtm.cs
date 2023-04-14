@@ -26,7 +26,7 @@ namespace Banking.Atm
                 { "cardnumber", CardNumber },
                 { "pin", pin }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/pin/enter/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/pin/enter/", values));
 
             return true; 
         }
@@ -38,7 +38,7 @@ namespace Banking.Atm
                 { "oldpin", oldPin },
                 { "newpin", newPin }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/pin/change/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/pin/change/", values));
 
             return true; 
         }
@@ -49,7 +49,7 @@ namespace Banking.Atm
             {
                 { "cardnumber", CardNumber }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/balance/get/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/balance/get/", values));
 
             return "Balance: "; 
         }
@@ -62,7 +62,7 @@ namespace Banking.Atm
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency() }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/cash/deposit/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/cash/deposit/", values));
 
             return true; 
         }
@@ -74,7 +74,7 @@ namespace Banking.Atm
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency() }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/cash/withdraw/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/cash/withdraw/", values));
 
             return true; 
         }
@@ -88,7 +88,7 @@ namespace Banking.Atm
                 { "currency", money.GetCurrency() },
                 { "bankaccountnumber", bankAccountNumber }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/transfer/tobankaccount/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/transfer/tobankaccount/", values));
 
             return true; 
         }
@@ -101,7 +101,7 @@ namespace Banking.Atm
                 { "currency", money.GetCurrency() },
                 { "phonenumber", phoneNumber.Replace("+", "") }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/transfer/tophonenumber/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/transfer/tophonenumber/", values));
 
             return true; 
         }
@@ -114,7 +114,7 @@ namespace Banking.Atm
                 { "currency", money.GetCurrency() },
                 { "phonenumber", phoneNumber.Replace("+", "") }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/banking/atm/v1/transfer/fps/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/atm/v1/transfer/fps/", values));
 
             return true; 
         }
