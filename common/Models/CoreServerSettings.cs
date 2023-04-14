@@ -6,5 +6,6 @@ namespace Banking.Common.Models
         public string[] Eftpos { get; set; }
         
         public string[] HttpPathsAtm { get; set; }
+        public string[] HttpPathsEftpos { get; set; }
     }
 }

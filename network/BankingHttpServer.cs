@@ -120,7 +120,7 @@ namespace Banking.Network
         private void AddWebPaths()
         {
             foreach (string atm in Settings.Atm) foreach (string path in Settings.HttpPathsAtm) WebPaths.Add("/atm/" + atm + path);
-            foreach (string eftpos in Settings.Eftpos) WebPaths.Add("/eftpos/" + eftpos + "/pin/enter/");
+            foreach (string eftpos in Settings.Eftpos) foreach (string path in Settings.HttpPathsEftpos) WebPaths.Add("/eftpos/" + eftpos + path);
             WebPaths.Add("/test/");
             WebPaths.Add("/dbg/");
         }

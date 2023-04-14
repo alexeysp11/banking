@@ -2,6 +2,7 @@
     "CoreServerSettings": {
         "Atm": ["v1", "v2"],
         "Eftpos": ["v1", "v2"], 
+
         "HttpPathsAtm": [
             "/pin/enter/", 
             "/pin/change/",
@@ -11,6 +12,10 @@
             "/transfer/tobankaccount/",
             "/transfer/tophonenumber/",
             "/transfer/fps/"
+        ], 
+        "HttpPathsEftpos": [
+            "/pin/enter/",
+            "/transfer/"
         ]
     }
 }

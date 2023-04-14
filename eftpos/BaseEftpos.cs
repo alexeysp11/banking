@@ -1,22 +1,13 @@
 using Banking.Common.Enums; 
 using Banking.Common.Models; 
-using Banking.Core.Preproc; 
+using System.Collections.Generic;
 
 namespace Banking.Eftpos
 {
     public class BaseEftpos : IEftpos
     {
         private string CardNumber { get; set; }
-
-        private CardPreproc CardPreproc { get; set; }
-        private IEftposTransferPreproc TransferPreproc { get; set; }
         
-        public BaseEftpos()
-        {
-            CardPreproc = new CardPreproc(); 
-            TransferPreproc = new TransferPreproc(); 
-        }
-
         // Start payment: tap, swipe or insert card to make a payment 
         public bool StartPayment()
         {
@@ -32,12 +23,28 @@ namespace Banking.Eftpos
 
         public bool EnterPin(string pin)
         {
-            return CardPreproc.CheckPin(CardNumber, pin); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "pin", pin }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/eftpos/v1/pin/enter/", values));
+
+            return true; 
         }
 
         public bool TransferToEftpos(Money money, Currency currency, string eftposInfo)
         {
-            return TransferPreproc.TransferToEftpos(CardPreproc.GetBankAccountId(CardNumber), money, currency, eftposInfo); 
+            var values = new Dictionary<string, string>
+            {
+                { "cardnumber", CardNumber },
+                { "amount", money.GetAmount() },
+                { "currency", money.GetCurrency() },
+                { "eftposinfo", eftposInfo }
+            };
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8080/eftpos/v1/transfer/", values));
+
+            return true; 
         }
     }
 }
