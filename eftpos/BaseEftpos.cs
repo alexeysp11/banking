@@ -8,7 +8,9 @@ namespace Banking.Eftpos
     {
         private string CardNumber { get; set; }
         
-        // Start payment: tap, swipe or insert card to make a payment 
+        /// <summary>
+        /// Start payment: tap, swipe or insert card to make a payment 
+        /// </summary>
         public bool StartPayment()
         {
             CardNumber = "5345-5732-2248"; 
