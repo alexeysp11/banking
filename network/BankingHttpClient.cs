@@ -1,5 +1,7 @@
 using System.Collections.Generic; 
 using System.Net.Http;
+// using System.Text.Json; 
+// using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Banking.Network
@@ -31,7 +33,8 @@ namespace Banking.Network
             try
             {
                 Task.Run(async () => {
-                    var response = await client.PostAsync(requestUri, new FormUrlEncodedContent(values));
+                    string jsonStr = System.Text.Json.JsonSerializer.Serialize(values); 
+                    var response = await client.PostAsync(requestUri, new StringContent(jsonStr));
                     responseString = await response.Content.ReadAsStringAsync();
                 }).Wait();
             }

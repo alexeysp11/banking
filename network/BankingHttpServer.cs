@@ -14,7 +14,7 @@ namespace Banking.Network
         /// <summary>
         /// 
         /// </summary>
-        private string ServerAddress = "http://localhost:8080/banking/"; 
+        private string ServerAddress = "http://127.0.0.1:8080/banking/"; 
         /// <summary>
         /// Path of bin directory 
         /// </summary>
@@ -124,6 +124,7 @@ namespace Banking.Network
             foreach (string eftpos in Settings.Eftpos) foreach (string path in Settings.HttpPathsEftpos) WebPaths.Add("/eftpos/" + eftpos + path);
             WebPaths.Add("/test/");
             WebPaths.Add("/dbg/");
+            foreach (string path in WebPaths) System.Console.WriteLine("path: " + path); 
         }
 
         /// <summary>
