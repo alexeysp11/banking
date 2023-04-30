@@ -14,7 +14,7 @@ namespace Banking.Network
         /// <summary>
         /// 
         /// </summary>
-        private string ServerAddress = "http://127.0.0.1:8080/banking/"; 
+        private string ServerAddress { get; } 
         /// <summary>
         /// Path of bin directory 
         /// </summary>
@@ -28,7 +28,7 @@ namespace Banking.Network
         /// </summary>
         private List<string> WebPaths = new List<string>();
         /// <summary>
-        /// 
+        /// Confidurations related to the core server
         /// </summary>
         private Banking.Common.Models.CoreServerSettings Settings { get; set; }
         #endregion  // Private properties
@@ -40,6 +40,7 @@ namespace Banking.Network
         public BankingHttpServer(string configFile)
         {
             Settings = (new Banking.Common.Configurator()).GetCoreServerConfigSettings(configFile); 
+            ServerAddress = Settings.ServerAddress; 
             AddWebPaths(); 
         }
         #endregion  // Constructors
@@ -55,6 +56,7 @@ namespace Banking.Network
             listener.Start();
 
             System.Console.WriteLine("Start to listen...");
+            System.Console.WriteLine("Environment: " + Settings.Environment.ToLower()); 
 
             new Thread(() =>
                 {
@@ -75,13 +77,12 @@ namespace Banking.Network
         /// <param name="ctx"></param>
         private void ProcessRequest(HttpListenerContext ctx)
         {
-            string responseText = GetResponseText(ctx.Request.Url.ToString());
-            byte[] buf = Encoding.UTF8.GetBytes(responseText);
+            string url = ctx.Request.Url.ToString(); 
+            string body = (new System.IO.StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding)).ReadToEnd(); 
+            byte[] buf = Encoding.UTF8.GetBytes(GetResponseText(url, body));
 
+            System.Console.WriteLine("body: " + body); 
             System.Console.WriteLine(ctx.Response.StatusCode + " " + ctx.Response.StatusDescription + ": " + ctx.Request.Url);
-
-            System.IO.StreamReader reader = new System.IO.StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding);
-            System.Console.WriteLine(reader.ReadToEnd()); 
 
             ctx.Response.ContentEncoding = Encoding.UTF8;
             ctx.Response.ContentType = "text/html";
@@ -95,22 +96,26 @@ namespace Banking.Network
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private string GetResponseText(string url)
+        private string GetResponseText(string url, string body)
         {
             if (!IsPathValid(url)) return "Path is not valid"; 
-            // if (IsPathValid(url, WebPaths["atm/pin/enter"]))
-            // {
-            //     return "<html><head><title>atm/pin/enter</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>atm/pin/enter</body></html>"; 
-            // }
-            // else if (IsPathValid(url, WebPaths["test"]))
-            // {
-            //     return "<html><head><title>test</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>test</body></html>"; 
-            // }
-            // else if (IsPathValid(url, WebPaths["dbg"]))
-            // {
-            //     return "<html><head><title>Debug</title></head><body>Hello, this is a custom BankingCoreHttpServer.<br>Debug</body></html>";
-            // }
+            if (url.Contains("/atm/")) foreach (string path in Settings.HttpPathsAtm) if (url.Contains(path)) return ProcessAtm(url, body); 
+            if (url.Contains("/eftpos/")) foreach (string path in Settings.HttpPathsEftpos) if (url.Contains(path)) return ProcessEfpos(url, body); 
+            if (Settings.Environment.ToLower() == "test") foreach (string path in Settings.HttpPathsDbg) if (url.Contains(path)) return ProcessDbg(url);
             return "Page is not found";
+        }
+
+        private string ProcessAtm(string url, string body)
+        {
+            return "ProcessAtm: " + body; 
+        }
+        private string ProcessEfpos(string url, string body)
+        {
+            return "ProcessEfpos: " + body; 
+        }
+        private string ProcessDbg(string url)
+        {
+            return "ProcessDbg"; 
         }
         #endregion  // Request processing 
 
@@ -120,11 +125,10 @@ namespace Banking.Network
         /// </summary>
         private void AddWebPaths()
         {
-            foreach (string atm in Settings.Atm) foreach (string path in Settings.HttpPathsAtm) WebPaths.Add("/atm/" + atm + path);
-            foreach (string eftpos in Settings.Eftpos) foreach (string path in Settings.HttpPathsEftpos) WebPaths.Add("/eftpos/" + eftpos + path);
-            WebPaths.Add("/test/");
-            WebPaths.Add("/dbg/");
-            foreach (string path in WebPaths) System.Console.WriteLine("path: " + path); 
+            foreach (string atmUid in Settings.AtmUid) foreach (string path in Settings.HttpPathsAtm) WebPaths.Add("/atm/" + atmUid + path);
+            foreach (string eftposUid in Settings.EftposUid) foreach (string path in Settings.HttpPathsEftpos) WebPaths.Add("/eftpos/" + eftposUid + path);
+            if (Settings.Environment.ToLower() == "test") foreach (string path in Settings.HttpPathsDbg) WebPaths.Add(path);
+            if (Settings.PrintWebPaths) foreach (string path in WebPaths) System.Console.WriteLine("webpath: " + path); 
         }
 
         /// <summary>
@@ -153,7 +157,7 @@ namespace Banking.Network
             foreach (string path in WebPaths) 
             {
                 purePath = path.TrimStart(WebSiteFSDelimiterChars).TrimEnd(WebSiteFSDelimiterChars); 
-                if (pureUrl.Contains(purePath)) return true; 
+                if (!string.IsNullOrEmpty(purePath) && pureUrl.Contains(purePath)) return true; 
             }
             return false;
         }

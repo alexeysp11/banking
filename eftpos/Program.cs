@@ -9,7 +9,7 @@ namespace Banking.Eftpos
         {
             bool isFinished = false; 
             string pin = "5544"; 
-            string eftposInfo = "TEST-EFTPOS INFO. ADDRESS: 58, TEST STR., SKU: 094"; 
+            string eftposUid = "v1", eftposInfo = "TEST-EFTPOS INFO. ADDRESS: 58, TEST STR., SKU: 094"; 
             Money moneyEftposUsd = new Money(23, 90, Currency.USD); 
 
             IEftpos eftpos = new BaseEftpos(); 
@@ -23,13 +23,13 @@ namespace Banking.Eftpos
                 if (!isStarted) return; 
                 
                 // Enter PIN to check if it is valid 
-                bool isPinCorrect = eftpos.EnterPin(pin); 
+                bool isPinCorrect = eftpos.EnterPin(pin, eftposUid, eftposInfo); 
                 System.Console.WriteLine("Enter PIN: **** - " + (isPinCorrect ? "OK" : "Incorrect PIN")); 
                 if (!isPinCorrect) throw new System.Exception("Incorrect PIN"); 
 
                 // Get result of a payment 
                 System.Console.WriteLine("Transfer EFTPOS (" + eftposInfo + "): " + moneyEftposUsd.GetString()); 
-                isFinished = eftpos.TransferToEftpos(moneyEftposUsd, Currency.USD, eftposInfo); 
+                isFinished = eftpos.TransferToEftpos(moneyEftposUsd, Currency.USD, eftposUid, eftposInfo); 
             }
             catch (System.Exception ex)
             {

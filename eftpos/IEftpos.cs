@@ -7,7 +7,7 @@ namespace Banking.Eftpos
     {
         bool StartPayment(); 
         bool FinishPayment(); 
-        bool EnterPin(string pin); 
-        bool TransferToEftpos(Money money, Currency currency, string eftposInfo); 
+        bool EnterPin(string pin, string eftposUid, string eftposInfo); 
+        bool TransferToEftpos(Money money, Currency currency, string eftposUid, string eftposInfo); 
     }
 }

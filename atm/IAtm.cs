@@ -8,16 +8,16 @@ namespace Banking.Atm
         bool InsertCard(); 
         bool TakeBackCard(); 
 
-        bool EnterPin(string pin); 
-        bool ChangePin(string oldPin, string newPin); 
+        bool EnterPin(string pin, string atmUid); 
+        bool ChangePin(string oldPin, string newPin, string atmUid); 
 
-        string CheckBalance(); 
+        string CheckBalance(string atmUid); 
 
-        bool DepositMoney(Money money, Currency currency); 
-        bool WithdrawMoney(Money money, Currency currency); 
+        bool DepositMoney(Money money, Currency currency, string atmUid); 
+        bool WithdrawMoney(Money money, Currency currency, string atmUid); 
 
-        bool TransferToBankAccount(Money money, Currency currency, string bankAccountNumber); 
-        bool TransferToPhoneNumber(Money money, Currency currency, string phoneNumber); 
-        bool TransferViaFps(Money money, Currency currency, string phoneNumber); 
+        bool TransferToBankAccount(Money money, Currency currency, string bankAccountNumber, string atmUid); 
+        bool TransferToPhoneNumber(Money money, Currency currency, string phoneNumber, string atmUid); 
+        bool TransferViaFps(Money money, Currency currency, string phoneNumber, string atmUid); 
     }
 }

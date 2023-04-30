@@ -1,7 +1,10 @@
 {
     "CoreServerSettings": {
-        "Atm": ["v1", "v2"],
-        "Eftpos": ["v1", "v2"], 
+        "ServerAddress": "http://127.0.0.1:8080/banking/",
+        "Environment": "test",
+
+        "AtmUid": ["v1", "v2"],
+        "EftposUid": ["v1", "v2"], 
 
         "HttpPathsAtm": [
             "/pin/enter/", 
@@ -16,6 +19,12 @@
         "HttpPathsEftpos": [
             "/pin/enter/",
             "/transfer/"
-        ]
+        ], 
+        "HttpPathsDbg": [
+            "/dbg/", 
+            "/test/"
+        ], 
+
+        "PrintWebPaths": false
     }
 }

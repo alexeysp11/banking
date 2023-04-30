@@ -6,6 +6,7 @@ namespace Banking.Eftpos
 {
     public class BaseEftpos : IEftpos
     {
+        private string ServerAddress { get; set; } = "http://localhost:8081/banking/"; 
         private string CardNumber { get; set; }
         
         /// <summary>
@@ -23,28 +24,31 @@ namespace Banking.Eftpos
             return true; 
         }
 
-        public bool EnterPin(string pin)
+        public bool EnterPin(string pin, string eftposUid, string eftposInfo)
         {
             var values = new Dictionary<string, string>
             {
+                { "eftposuid", eftposUid },
                 { "cardnumber", CardNumber },
-                { "pin", pin }
+                { "pin", pin },
+                { "eftposinfo", eftposInfo }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/eftpos/v1/pin/enter/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post(ServerAddress + "eftpos/" + eftposUid + "/pin/enter/", values));
 
             return true; 
         }
 
-        public bool TransferToEftpos(Money money, Currency currency, string eftposInfo)
+        public bool TransferToEftpos(Money money, Currency currency, string eftposUid, string eftposInfo)
         {
             var values = new Dictionary<string, string>
             {
+                { "eftposuid", eftposUid },
                 { "cardnumber", CardNumber },
                 { "amount", money.GetAmount() },
-                { "currency", money.GetCurrency() },
+                { "currency", money.GetCurrency().ToLower() },
                 { "eftposinfo", eftposInfo }
             };
-            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post("http://localhost:8081/banking/eftpos/v1/transfer/", values));
+            System.Console.WriteLine(Banking.Network.BankingHttpClient.Post(ServerAddress + "eftpos/" + eftposUid + "/transfer/", values));
 
             return true; 
         }

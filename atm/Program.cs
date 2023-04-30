@@ -7,7 +7,7 @@ namespace Banking.Atm
     {
         static void Main(string[] args)
         {
-            string oldPin = "5544", newPin = "2343"; 
+            string atmUid = "v1", oldPin = "5544", newPin = "2343"; 
 
             Money moneyDepositUsd = new Money(27, 0, Currency.USD); 
             Money moneyDepositEur = new Money(53, 99, Currency.EUR); 
@@ -32,39 +32,39 @@ namespace Banking.Atm
                 System.Console.WriteLine(isInserted ? "Card inserted" : "Card is not inserted");
                 if (!isInserted) return; 
 
-                bool isPinCorrect = atm.EnterPin(oldPin); 
+                bool isPinCorrect = atm.EnterPin(oldPin, atmUid); 
                 System.Console.WriteLine("Enter PIN: **** - " + (isPinCorrect ? "OK" : "Incorrect PIN")); 
                 if (!isPinCorrect) throw new System.Exception("Incorrect PIN"); 
 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
                 System.Console.WriteLine("Deposit: " + moneyDepositUsd.GetString() + " and " + moneyDepositEur.GetString()); 
-                atm.DepositMoney(moneyDepositUsd, Currency.USD); 
-                atm.DepositMoney(moneyDepositEur, Currency.EUR); 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                atm.DepositMoney(moneyDepositUsd, Currency.USD, atmUid); 
+                atm.DepositMoney(moneyDepositEur, Currency.EUR, atmUid); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
                 System.Console.WriteLine("Withdraw: " + moneyWithdrawalUsd.GetString() + " and " + moneyWithdrawalEur.GetString()); 
-                atm.WithdrawMoney(moneyWithdrawalUsd, Currency.USD); 
-                atm.WithdrawMoney(moneyWithdrawalEur, Currency.EUR); 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                atm.WithdrawMoney(moneyWithdrawalUsd, Currency.USD, atmUid); 
+                atm.WithdrawMoney(moneyWithdrawalEur, Currency.EUR, atmUid); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
                 System.Console.WriteLine("Transfer to bank account '" + bankAccountNumber.ToString() + "': " + moneyTbaUsd.GetString() + " and " + moneyTbaEur.GetString()); 
-                atm.TransferToBankAccount(moneyTbaUsd, Currency.USD, bankAccountNumber); 
-                atm.TransferToBankAccount(moneyTbaEur, Currency.EUR, bankAccountNumber); 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                atm.TransferToBankAccount(moneyTbaUsd, Currency.USD, bankAccountNumber, atmUid); 
+                atm.TransferToBankAccount(moneyTbaEur, Currency.EUR, bankAccountNumber, atmUid); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
                 System.Console.WriteLine("Transfer to phone number '" + phoneNumber.ToString() + "': " + moneyTpnUsd.GetString() + " and " + moneyTpnEur.GetString()); 
-                atm.TransferToPhoneNumber(moneyTpnUsd, Currency.USD, phoneNumber); 
-                atm.TransferToPhoneNumber(moneyTpnEur, Currency.EUR, phoneNumber); 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                atm.TransferToPhoneNumber(moneyTpnUsd, Currency.USD, phoneNumber, atmUid); 
+                atm.TransferToPhoneNumber(moneyTpnEur, Currency.EUR, phoneNumber, atmUid); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
                 System.Console.WriteLine("Transfer to phone number '" + phoneNumber.ToString() + "' via FPS: " + moneyFpsUsd.GetString() + " and " + moneyFpsEur.GetString()); 
-                atm.TransferViaFps(moneyFpsUsd, Currency.USD, phoneNumber); 
-                atm.TransferViaFps(moneyFpsEur, Currency.EUR, phoneNumber); 
-                System.Console.WriteLine(atm.CheckBalance()); 
+                atm.TransferViaFps(moneyFpsUsd, Currency.USD, phoneNumber, atmUid); 
+                atm.TransferViaFps(moneyFpsEur, Currency.EUR, phoneNumber, atmUid); 
+                System.Console.WriteLine(atm.CheckBalance(atmUid)); 
 
-                System.Console.WriteLine("New PIN: **** - " + (atm.ChangePin(oldPin, newPin) ? "OK" : "Unable to change PIN"));
-                System.Console.WriteLine("Confirm PIN: **** - " + (atm.EnterPin(newPin) ? "OK" : "Incorrect PIN"));
+                System.Console.WriteLine("New PIN: **** - " + (atm.ChangePin(oldPin, newPin, atmUid) ? "OK" : "Unable to change PIN"));
+                System.Console.WriteLine("Confirm PIN: **** - " + (atm.EnterPin(newPin, atmUid) ? "OK" : "Incorrect PIN"));
             }
             catch (System.Exception ex)
             {
