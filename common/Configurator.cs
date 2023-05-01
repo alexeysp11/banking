@@ -8,13 +8,13 @@ namespace Banking.Common
         /// <summary>
         /// Gets settings for server from config file 
         /// </summary>
-        public CoreServerSettings GetCoreServerConfigSettings(string filename)
+        public T GetConfigSettings<T>(string filename, string sectionName)
         {
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile(filename)
                 .AddEnvironmentVariables()
                 .Build();
-            return config.GetSection("CoreServerSettings").Get<CoreServerSettings>();
+            return config.GetSection(sectionName).Get<T>();
         }
     }
 }

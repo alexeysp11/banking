@@ -4,7 +4,7 @@ using System.Net.Http;
 // using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Banking.Network
+namespace Banking.Common
 {
     public class BankingHttpClient 
     {

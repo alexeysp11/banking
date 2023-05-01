@@ -8,11 +8,12 @@ namespace Banking.Eftpos
         static void Main(string[] args)
         {
             bool isFinished = false; 
-            string pin = "5544"; 
+            string serverAddress = "http://localhost:8081/banking/"; 
+            string cardNumber = "5345-5732-2248", pin = "5544"; 
             string eftposUid = "v1", eftposInfo = "TEST-EFTPOS INFO. ADDRESS: 58, TEST STR., SKU: 094"; 
             Money moneyEftposUsd = new Money(23, 90, Currency.USD); 
 
-            IEftpos eftpos = new BaseEftpos(); 
+            IEftpos eftpos = new BaseEftpos(serverAddress, eftposUid, eftposInfo); 
 
             System.Console.WriteLine("EFTPOS imitation\n".ToUpper());
             try
@@ -23,13 +24,13 @@ namespace Banking.Eftpos
                 if (!isStarted) return; 
                 
                 // Enter PIN to check if it is valid 
-                bool isPinCorrect = eftpos.EnterPin(pin, eftposUid, eftposInfo); 
+                bool isPinCorrect = eftpos.EnterPin(cardNumber, pin); 
                 System.Console.WriteLine("Enter PIN: **** - " + (isPinCorrect ? "OK" : "Incorrect PIN")); 
                 if (!isPinCorrect) throw new System.Exception("Incorrect PIN"); 
 
                 // Get result of a payment 
                 System.Console.WriteLine("Transfer EFTPOS (" + eftposInfo + "): " + moneyEftposUsd.GetString()); 
-                isFinished = eftpos.TransferToEftpos(moneyEftposUsd, Currency.USD, eftposUid, eftposInfo); 
+                isFinished = eftpos.TransferToEftpos(cardNumber, moneyEftposUsd, Currency.USD); 
             }
             catch (System.Exception ex)
             {

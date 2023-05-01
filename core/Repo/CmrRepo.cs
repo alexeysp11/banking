@@ -1,6 +1,7 @@
 using System.Collections.Generic; 
 using Banking.Common.Enums; 
 using Banking.Common.Models; 
+using Banking.Core.Models; 
 
 namespace Banking.Core.Repo
 {

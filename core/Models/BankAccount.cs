@@ -1,6 +1,7 @@
 using Banking.Common.Enums; 
+using Banking.Common.Models; 
 
-namespace Banking.Common.Models
+namespace Banking.Core.Models
 {
     public class BankAccount
     {

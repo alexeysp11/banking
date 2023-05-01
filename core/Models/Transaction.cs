@@ -1,4 +1,4 @@
-namespace Banking.Common.Models
+namespace Banking.Core.Models
 {
     public class Transaction
     {

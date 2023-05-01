@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Banking.Network
+namespace Banking.CoreServer
 {
     public class BankingHttpServer
     {
@@ -39,7 +39,7 @@ namespace Banking.Network
         /// </summary>
         public BankingHttpServer(string configFile)
         {
-            Settings = (new Banking.Common.Configurator()).GetCoreServerConfigSettings(configFile); 
+            Settings = (new Banking.Common.Configurator()).GetConfigSettings<Banking.Common.Models.CoreServerSettings>(configFile, "CoreServerSettings"); 
             ServerAddress = Settings.ServerAddress; 
             AddWebPaths(); 
         }

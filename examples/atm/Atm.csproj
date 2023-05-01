@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../common/Common.csproj" />
-    <ProjectReference Include="../network/Network.csproj" />
+    <ProjectReference Include="../../common/Common.csproj" />
   </ItemGroup>
 
 </Project>

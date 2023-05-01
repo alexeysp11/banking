@@ -13,6 +13,14 @@ Modules:
 
 ![ComponentDiagram](docs/img/ComponentDiagram.png)
 
+Server gets JSON an an input and parses it as a C# class: 
+```C#
+public class Operation
+{
+    // 
+}
+```
+
 ## How to contribute  
 
 To be continued... 
