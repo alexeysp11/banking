@@ -6,8 +6,6 @@ namespace Banking.Core
 {
     public class CoreRouter
     {
-        private string CardNumber { get; set; }
-
         private CardPreproc CardPreproc { get; set; }
         private BankAccountPreproc BankAccountPreproc { get; set; }
         private ICommonTransferPreproc CommonTransferPreproc { get; set; }
@@ -22,48 +20,48 @@ namespace Banking.Core
         }
 
         #region ATM 
-        public bool EnterPin(string pin)
+        public bool EnterPin(string cardNumber, string pin)
         {
-            return CardPreproc.CheckPin(CardNumber, pin); 
+            return CardPreproc.CheckPin(cardNumber, pin); 
         }
-        public bool ChangePin(string oldPin, string newPin)
+        public bool ChangePin(string cardNumber, string oldPin, string newPin)
         {
-            return CardPreproc.ChangePin(CardNumber, oldPin, newPin); 
+            return CardPreproc.ChangePin(cardNumber, oldPin, newPin); 
         }
         
-        public string CheckBalance()
+        public string CheckBalance(string cardNumber)
         {
-            return BankAccountPreproc.CheckBalance(CardPreproc.GetBankAccountId(CardNumber)); 
+            return BankAccountPreproc.CheckBalance(CardPreproc.GetBankAccountId(cardNumber)); 
         }
 
-        public bool DepositMoney(Money money, Currency currency)
+        public bool DepositMoney(string cardNumber, Money money, Currency currency)
         {
-            return CommonTransferPreproc.DepositMoney(CardPreproc.GetBankAccountId(CardNumber), money, currency); 
+            return CommonTransferPreproc.DepositMoney(CardPreproc.GetBankAccountId(cardNumber), money, currency); 
         }
-        public bool WithdrawMoney(Money money, Currency currency)
+        public bool WithdrawMoney(string cardNumber, Money money, Currency currency)
         {
-            return CommonTransferPreproc.WithdrawMoney(CardPreproc.GetBankAccountId(CardNumber), money, currency); 
+            return CommonTransferPreproc.WithdrawMoney(CardPreproc.GetBankAccountId(cardNumber), money, currency); 
         }
 
-        public bool TransferToBankAccount(Money money, Currency currency, string bankAccountNumber)
+        public bool TransferToBankAccount(string cardNumber, Money money, Currency currency, string bankAccountNumber)
         {
-            return CommonTransferPreproc.TransferToBankAccount(CardPreproc.GetBankAccountId(CardNumber), money, currency, bankAccountNumber); 
+            return CommonTransferPreproc.TransferToBankAccount(CardPreproc.GetBankAccountId(cardNumber), money, currency, bankAccountNumber); 
         }
-        public bool TransferToPhoneNumber(Money money, Currency currency, string phoneNumber)
+        public bool TransferToPhoneNumber(string cardNumber, Money money, Currency currency, string phoneNumber)
         {
-            return CommonTransferPreproc.TransferToPhoneNumber(CardPreproc.GetBankAccountId(CardNumber), money, currency, phoneNumber); 
+            return CommonTransferPreproc.TransferToPhoneNumber(CardPreproc.GetBankAccountId(cardNumber), money, currency, phoneNumber); 
         }
-        public bool TransferViaFps(Money money, Currency currency, string phoneNumber)
+        public bool TransferViaFps(string cardNumber, Money money, Currency currency, string phoneNumber)
         {
-            return CommonTransferPreproc.TransferViaFps(CardPreproc.GetBankAccountId(CardNumber), money, currency, phoneNumber); 
+            return CommonTransferPreproc.TransferViaFps(CardPreproc.GetBankAccountId(cardNumber), money, currency, phoneNumber); 
         }
         #endregion  // ATM 
         
         #region EFTPOS
 
-        public bool TransferToEftpos(Money money, Currency currency, string eftposInfo)
+        public bool TransferToEftpos(string cardNumber, Money money, Currency currency, string eftposInfo)
         {
-            return EftposTransferPreproc.TransferToEftpos(CardPreproc.GetBankAccountId(CardNumber), money, currency, eftposInfo); 
+            return EftposTransferPreproc.TransferToEftpos(CardPreproc.GetBankAccountId(cardNumber), money, currency, eftposInfo); 
         }
         #endregion  // EFTPOS
     }

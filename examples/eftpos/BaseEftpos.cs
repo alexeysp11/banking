@@ -34,6 +34,8 @@ namespace Banking.Eftpos
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "eftpos" },
+                { "operationname", "enterpin" },
                 { "eftposuid", EftposUid },
                 { "cardnumber", cardNumber },
                 { "pin", pin },
@@ -48,6 +50,8 @@ namespace Banking.Eftpos
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "eftpos" },
+                { "operationname", "transfertoeftpos" },
                 { "eftposuid", EftposUid },
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },

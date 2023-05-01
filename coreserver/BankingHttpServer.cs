@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json; 
 using System.Threading;
 using System.Threading.Tasks;
+using Banking.Common.Enums; 
+using Banking.Common.Models; 
+using Banking.Core; 
+using Banking.Core.Models; 
 
 namespace Banking.CoreServer
 {
@@ -105,14 +110,93 @@ namespace Banking.CoreServer
             return "Page is not found";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private string ProcessAtm(string url, string body)
         {
-            return "ProcessAtm: " + body; 
+            // Check if url path maps operation name 
+
+            // 
+            bool status = false; 
+            string response = string.Empty; 
+            
+            // 
+            CoreRouter coreRouter = new CoreRouter(); 
+            FinOperation operation = JsonSerializer.Deserialize<FinOperation>(body);
+
+            // Process request 
+            Currency currency = string.IsNullOrEmpty(operation.Currency) ? Currency.USD : GetCurrency(operation.Currency); 
+            switch (operation.OperationName)
+            {
+                case "enterpin": 
+                    status = coreRouter.EnterPin(operation.CardNumber, operation.Pin); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "changepin": 
+                    status = coreRouter.ChangePin(operation.CardNumber, operation.OldPin, operation.NewPin); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "checkbalance": 
+                    response = coreRouter.CheckBalance(operation.CardNumber); 
+                    break; 
+                case "depositmoney": 
+                    status = coreRouter.DepositMoney(operation.CardNumber, new Money(operation.Amount, currency), currency); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "withdrawmoney": 
+                    status = coreRouter.WithdrawMoney(operation.CardNumber, new Money(operation.Amount, currency), currency); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "transfertobankaccount": 
+                    status = coreRouter.TransferToBankAccount(operation.CardNumber, new Money(operation.Amount, currency), currency, operation.EftposInfo); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "transfertophonenumber": 
+                    status = coreRouter.TransferToPhoneNumber(operation.CardNumber, new Money(operation.Amount, currency), currency, operation.EftposInfo); 
+                    response = GetStatusString(status); 
+                    break; 
+                case "transferviafps": 
+                    status = coreRouter.TransferViaFps(operation.CardNumber, new Money(operation.Amount, currency), currency, operation.EftposInfo); 
+                    response = GetStatusString(status); 
+                    break; 
+                default: 
+                    throw new System.Exception("Incorrect operation name: " + operation.OperationName); 
+            }            
+            return "ProcessAtm (response: " + response + "): " + body; 
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private string ProcessEfpos(string url, string body)
         {
-            return "ProcessEfpos: " + body; 
+            // Check if url path maps operation name 
+
+            // 
+            bool status = false; 
+            
+            // 
+            CoreRouter coreRouter = new CoreRouter(); 
+            FinOperation operation = JsonSerializer.Deserialize<FinOperation>(body);
+
+            // Process request 
+            Currency currency = string.IsNullOrEmpty(operation.Currency) ? Currency.USD : GetCurrency(operation.Currency); 
+            switch (operation.OperationName)
+            {
+                case "enterpin": 
+                    status = coreRouter.EnterPin(operation.CardNumber, operation.Pin); 
+                    break; 
+                case "transfertoeftpos": 
+                    status = coreRouter.TransferToEftpos(operation.CardNumber, new Money(operation.Amount, currency), currency, operation.EftposInfo); 
+                    break; 
+                default: 
+                    throw new System.Exception("Incorrect operation name: " + operation.OperationName); 
+            }
+            return "ProcessEfpos (response: " + GetStatusString(status) + "): " + body; 
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private string ProcessDbg(string url)
         {
             return "ProcessDbg"; 
@@ -176,5 +260,34 @@ namespace Banking.CoreServer
             return System.IO.File.ReadAllText(pureBin + @"\" + purePath); 
         }
         #endregion  // Getting files 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private string GetStatusString(bool status)
+        {
+            return status ? "SUCCESS" : "FAILED";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private Currency GetCurrency(string currency)
+        {
+            if (string.IsNullOrEmpty(currency)) throw new System.Exception("Currency could not be null or empty"); 
+
+            Currency cur = Currency.USD; 
+            switch (currency.ToLower())
+            {
+                case "usd": 
+                    cur = Currency.USD; 
+                    break; 
+                case "eur": 
+                    cur = Currency.EUR; 
+                    break; 
+                default: 
+                    throw new System.Exception("Incorrect currency format: " + currency); 
+            }
+            return cur; 
+        }
     }
 }

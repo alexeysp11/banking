@@ -8,6 +8,36 @@ namespace Banking.Common.Models
         public int Fraction { get; private set; }
         public Currency Currency { get; private set; }
 
+        #region Constructors
+        /// <summary>
+        /// 
+        /// </summary>
+        public Money(string amount, Currency currency)
+        {
+            int integer = 0, fraction = 0; 
+
+            // Convert amount 
+            string[] subs = amount.Split('.');
+            if (subs.Length == 0 || subs.Length > 2) throw new System.Exception("Incorrect format of the parameter amount: " + amount); 
+            try
+            {
+                integer = System.Int32.Parse(subs[0]);
+                fraction = subs.Length == 2 ? System.Int32.Parse(subs[1]) : 0; 
+            }
+            catch (System.FormatException ex)
+            {
+                throw new System.Exception("Unable to convert amount string into money object: " + ex.Message);
+            }
+            CheckFractionFormat(fraction); 
+
+            Integer = integer; 
+            Fraction = fraction; 
+            Currency = currency; 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Money(int integer, int fraction, Currency currency)
         {
             CheckFractionFormat(fraction); 
@@ -16,6 +46,7 @@ namespace Banking.Common.Models
             Fraction = fraction; 
             Currency = currency; 
         }
+        #endregion  // Constructors
 
         public void Add(int integer, int fraction)
         {

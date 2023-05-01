@@ -28,6 +28,8 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "enterpin" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "pin", pin }
@@ -40,6 +42,8 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "changepin" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "oldpin", oldPin },
@@ -54,6 +58,8 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "checkbalance" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber }
             };
@@ -66,6 +72,8 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "depositmoney" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },
@@ -79,6 +87,8 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "withdrawmoney" },
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency().ToLower() }
@@ -92,11 +102,13 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "transfertobankaccount" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency().ToLower() },
-                { "bankaccountnumber", bankAccountNumber }
+                { "receiverbankaccountnumber", bankAccountNumber }
             };
             System.Console.WriteLine(Banking.Common.BankingHttpClient.Post(ServerAddress + "atm/" + AtmUid + "/transfer/tobankaccount/", values));
 
@@ -106,11 +118,13 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "transfertophonenumber" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency().ToLower() },
-                { "phonenumber", phoneNumber.Replace("+", "") }
+                { "receiverphonenumber", phoneNumber.Replace("+", "") }
             };
             System.Console.WriteLine(Banking.Common.BankingHttpClient.Post(ServerAddress + "atm/" + AtmUid + "/transfer/tophonenumber/", values));
 
@@ -120,11 +134,13 @@ namespace Banking.Atm
         {
             var values = new Dictionary<string, string>
             {
+                { "sourcename", "atm" },
+                { "operationname", "transferviafps" },
                 { "atmuid", AtmUid }, 
                 { "cardnumber", cardNumber },
                 { "amount", money.GetAmount() },
                 { "currency", money.GetCurrency().ToLower() },
-                { "phonenumber", phoneNumber.Replace("+", "") }
+                { "receiverphonenumber", phoneNumber.Replace("+", "") }
             };
             System.Console.WriteLine(Banking.Common.BankingHttpClient.Post(ServerAddress + "atm/" + AtmUid + "/transfer/fps/", values));
 
